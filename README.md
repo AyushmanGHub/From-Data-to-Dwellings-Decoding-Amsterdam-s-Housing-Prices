@@ -3,11 +3,10 @@
 # From Data to Dwellings: <br>
 # Decoding Amsterdam's Housing Prices 
 </center>
-<hr style="border: 0; height: 1px; background-color: black;">
 <hr style="border: 0; height: 3px; background-color: black;">
 
 ## Abstract
-<hr style="border: 0; height: 2px; background-color: grey;">
+
 
 This project aims to analyze and predict **housing prices in Amsterdam** using data from August 2021. The primary goal is to **identify trends affecting housing prices**. By analyzing predictors such as property area, number of rooms, and geographic location, the project will explore relationships through exploratory data analysis (EDA). A predictive model, using statistical and machine learning techniques, will be developed to estimate prices and provide insights into the market.
 
@@ -22,7 +21,7 @@ Here, we identify **trends** of various fields in our dataset by conducting univ
 
 <br>
 ### Figure 01. Histogram of (a) Price, (b) number of rooms and (c) Area of House
-<img src="path-to-your-image-file.jpg" alt="Alt Text" width="400"/>
+<img src="resource/01.png" alt="Alt Text" width="400"/>
 
 
 <br>
@@ -50,11 +49,10 @@ significant trends and correlations between various predictors such as
 area, number of rooms, and geographic location.
 
 -   **Rooms and Area vs. Price**: Area and number of rooms are the
-    strongest predictors of price. \vspace{0mm}
+    strongest predictors of price. 
 -   **Rooms and Area**: Rooms and Area are highly correlated
-    \vspace{0mm}
 -   **Latitude and Longitude vs. Price**: Location plays a role but is
-    less influential than area and room count. \vspace{0mm}
+    less influential than area and room count.
 -   **Correlation of Variables**: The strong correlation between area,
     rooms, and price suggests a linear relationship, making a linear
     regression model a suitable choice for prediction. Latitude and
