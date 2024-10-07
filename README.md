@@ -12,33 +12,29 @@ This project aims to analyze and predict **housing prices in Amsterdam** using d
 The Amsterdam housing market has recently undergone significant fluctuations due to various factors like economic conditions, demographics, and housing policies. Understanding these factors is vital for buyers, sellers, and investors.<br>
 By examining predictors such as property area, number of rooms, and geographic location (longitude and latitude), this project will use exploratory data analysis (EDA) to visualize relationships and assess their impact on prices. The goal is to evaluate whether these predictors can be used in a predictive model to estimate house prices and forecast market trends. By applying statistical and machine learning techniques, the project aims to offer insights into the Amsterdam housing market for practical use in decision-making.
 
-<br>
-<br>
+
 ## Exploratory Data Analysis with Visualisation
 
 Here, we identify **trends** of various fields in our dataset by conducting univariate, bivariate, and multivariate data analyses. Univariate analysis helps to **summarize individual variables**, bivariate analysis **explores relationships between two variables**, while multivariate analysis examines interactions between **multiple variables to uncover deeper patterns and insights** influencing housing prices.
 
-<br>
+
 ### Figure 01. Histogram of (a) Price, (b) number of rooms and (c) Area of House
 <img src="resource/01.png" alt="Alt Text" width="1000"/>
 
-
-<br>
 ### Figure 02. (a) Number of Rooms vs Price of House and (b) Area vs Price of House 
+<img src="resource/02.png" alt="Alt Text" width="1000"/>
 
-<br>
 ### Figure 03. (a) Longitude vs Price , (b) Latitude vs Price 
+<img src="resource/03.png" alt="Alt Text" width="1000"/>
 
-
-<br>
 ### Figure 04. Plots between Area vs Rooms
+<img src="resource/04.png" alt="Alt Text" width="1000"/>
 
-<br>
 ### Figure 05. Plot of House Locations(longitude and Latitude), Price and Area 
+<img src="resource/05.png" alt="Alt Text" width="1000"/>
 
-<br>
 ### Figure 06. Plot of Rooms vs Area coloured by Price
-
+<img src="resource/06.png" alt="Alt Text" width="1000"/>
 
 ## Conclusion and Discussion
 This project successfully analyzed and predicted housing prices in
