@@ -1,7 +1,7 @@
 #### Amsterdam-House-Price-Analysis-and-Prediction
 <center>
-# <strong> From Data to Dwellings: <br>
-# Decoding Amsterdam's Housing Prices </strong>
+# From Data to Dwellings: <br>
+# Decoding Amsterdam's Housing Prices 
 </center>
 <hr style="border: 0; height: 1px; background-color: black;">
 <hr style="border: 0; height: 3px; background-color: black;">
@@ -21,25 +21,25 @@ By examining predictors such as property area, number of rooms, and geographic l
 Here, we identify **trends** of various fields in our dataset by conducting univariate, bivariate, and multivariate data analyses. Univariate analysis helps to **summarize individual variables**, bivariate analysis **explores relationships between two variables**, while multivariate analysis examines interactions between **multiple variables to uncover deeper patterns and insights** influencing housing prices.
 
 <br>
-### <strong> Figure 01. Histogram of (a) Price, (b) number of rooms and (c) Area of House</strong>
+### Figure 01. Histogram of (a) Price, (b) number of rooms and (c) Area of House
 <img src="path-to-your-image-file.jpg" alt="Alt Text" width="400"/>
 
 
 <br>
-### <strong> Figure 02. (a) Number of Rooms vs Price of House and (b) Area vs Price of House </strong>
+###  Figure 02. (a) Number of Rooms vs Price of House and (b) Area vs Price of House 
 
 <br>
-### <strong> Figure 03. (a) Longitude vs Price , (b) Latitude vs Price </strong>
+### Figure 03. (a) Longitude vs Price , (b) Latitude vs Price 
 
 
 <br>
-### <strong> Figure 04. Plots between Area vs Rooms </strong>
+### Figure 04. Plots between Area vs Rooms
 
 <br>
-### <strong> Figure 05. Plot of House Locations(longitude and Latitude), Price and Area </strong>
+### Figure 05. Plot of House Locations(longitude and Latitude), Price and Area 
 
 <br>
-### <strong> Figure 06. Plot of Rooms vs Area coloured by Price </strong>
+### Figure 06. Plot of Rooms vs Area coloured by Price
 
 
 ## Conclusion and Discussion
