@@ -1,8 +1,6 @@
 #### Amsterdam-House-Price-Analysis-and-Prediction
-<center>
-# From Data to Dwellings: <br>
-# Decoding Amsterdam's Housing Prices 
-</center>
+
+# From Data to Dwellings: Decoding Amsterdam's Housing Prices 
 <hr style="border: 0; height: 3px; background-color: black;">
 
 ## Abstract
