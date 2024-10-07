@@ -1,8 +1,16 @@
 # Amsterdam-House-Price-Analysis-and-Prediction
 
 ## Abstract
+<hr style="border: 0; height: 2px; background-color: grey;">
+
 This project aims to analyze and predict **housing prices in Amsterdam** using data from August 2021. The primary goal is to **identify trends affecting housing prices**. By analyzing predictors such as property area, number of rooms, and geographic location, the project will explore relationships through exploratory data analysis (EDA). A predictive model, using statistical and machine learning techniques, will be developed to estimate prices and provide insights into the market.
 
+## Introduction
+The Amsterdam housing market has recently undergone significant fluctuations due to various factors like economic conditions, demographics, and housing policies. Understanding these factors is vital for buyers, sellers, and investors.<br>
+By examining predictors such as property area, number of rooms, and geographic location (longitude and latitude), this project will use exploratory data analysis (EDA) to visualize relationships and assess their impact on prices. The goal is to evaluate whether these predictors can be used in a predictive model to estimate house prices and forecast market trends. By applying statistical and machine learning techniques, the project aims to offer insights into the Amsterdam housing market for practical use in decision-making.
+
+## Exploratory Data Analysis with Visualisation
+Here, we identify **trends** of various fields in our dataset by conducting univariate, bivariate, and multivariate data analyses. Univariate analysis helps to **summarize individual variables**, bivariate analysis **explores relationships between two variables**, while multivariate analysis examines interactions between **multiple variables to uncover deeper patterns and insights** influencing housing prices.
 
 ## Conclusion and Discussion
 This project successfully analyzed and predicted housing prices in
@@ -10,8 +18,6 @@ Amsterdam by examining a comprehensive dataset from August 2021. Through
 univariate, bivariate, and multivariate data analyses, we identified
 significant trends and correlations between various predictors such as
 area, number of rooms, and geographic location.
-
-\vspace{-2mm}
 
 -   **Rooms and Area vs. Price**: Area and number of rooms are the
     strongest predictors of price. \vspace{0mm}
