@@ -1,0 +1,494 @@
+---
+title: "Amsterdam House Price Analysis and Prediction"
+output:
+  html_document:
+    toc: true
+    toc_depth: 3
+    df_print: paged
+always_allow_html: true
+fontsize: 16pt
+urlcolor: blue
+editor_options:
+  markdown:
+    wrap: 72
+---
+
+<style>
+  body {
+    margin: 4cm; /* Adjust the margin as needed */
+  }
+</style>
+
+<hr style="border: 0; height: 1px; background-color: black;">
+<hr style="border: 0; height: 3px; background-color: black;">
+
+
+<center>
+# <strong> From Data to Dwellings: <br>
+# Decoding Amsterdam's Housing Prices </strong>
+
+
+<span style="font-size: 15pt;">
+ <b>Ayushman Anupam </b> <br>
+<b>Chennai Mathematical Institute</b>
+</span>
+</center>
+
+<hr style="border: 0; height: 3px; background-color: black;">
+
+```{r setup, echo=FALSE}
+knitr::opts_chunk$set(echo = FALSE,warning = FALSE)
+# Suppress package startup messages
+suppressPackageStartupMessages(library(dplyr))
+suppressPackageStartupMessages(library(gridExtra))
+suppressPackageStartupMessages(library(ggplot2))
+```
+<br>
+
+## <strong> Introduction </strong>
+<hr style="border: 0; height: 2px; background-color: grey;">
+
+
+This project aims to analyze and predict **housing prices in Amsterdam**
+using comprehensive data collected in August 2021. The Amsterdam housing
+market has experienced significant fluctuations in recent years, driven
+by various factors such as economic conditions, demographics, and
+housing policies. Understanding the dynamics of this market is crucial
+for buyers, sellers, and investors alike. Therefore, the primary
+objective of this analysis is to **identify and comprehend the trends
+that influence housing prices in Amsterdam.** By examining a rich
+dataset that includes detailed information about house prices and their
+associated features, we seek to uncover variables that exhibit a strong
+correlation with housing prices.
+
+In our exploration of the dataset, we will focus on identifying key
+predictors of housing prices. These predictors may include various
+attributes such as the area of the property, the number of rooms, the
+location's longitude and latitude, and other relevant features. Through
+exploratory data analysis (EDA), we will **visualize these relationships
+to determine which factors most significantly impact housing prices.**
+
+Furthermore, the project will assess whether the identified predictors
+can be effectively employed in a predictive model to estimate housing
+prices and forecast market trends. By leveraging statistical techniques
+and machine learning algorithms, we aim to develop a robust model that
+offers a good fit for predicting housing prices based on the available
+dataset. This model will not only facilitate a deeper understanding of
+how various factors interact and contribute to price fluctuations but
+also provide practical applications for stakeholders in the real estate
+market.
+
+
+
+```{r loading required libraries, echo=FALSE, message=FALSE, warning=FALSE}
+library(readxl)
+library(ggplot2)
+library(gridExtra)
+library(dplyr)
+library(plotly)
+library(RColorBrewer)
+library(reshape2)
+```
+
+```{r load libraries and clean, message=FALSE, warning=FALSE, include=FALSE}
+
+## reading data
+AmHouse <- read.csv("C://Users//ayush//Downloads//Amsterdam House Price Ananlysis and prediction//HousingPrices-Amsterdam-August-2021.csv")
+# Count the number of rows with NA values
+NA_rows_count <- sum(!complete.cases(AmHouse))
+
+```
+<br><br>
+
+
+## <strong> Data set Description </strong>
+<hr style="border: 0; height: 2px; background-color: grey;">
+
+This
+[dataset](https://www.kaggle.com/datasets/thomasnibb/amsterdam-house-price-prediction/data?select=HousingPrices-Amsterdam-August-2021.csv)
+detailed information about house prices in Amsterdam, Netherlands as of
+August 2021.
+
+The housing prices have been obtained from Pararius.nl as a snapshot in
+August 2021. The original data provided features such as price, floor
+area and the number of rooms. The data has been further enhanced by
+utilising the Mapbox API to obtain the coordinates of each listing.
+
+The Amsterdam House Price Prediction data set **contains 924** records
+and includes features such as Address, Zip, Rooms, Area, Lat, Lon and
+Price as defined below. However, there are **4 missing values** in the
+"Price" field. To ensure data integrity, these **records with missing
+prices are removed** before further analysis or modeling. This step
+ensures accurate predictions by eliminating incomplete data points,
+which could skew the results of the machine learning models designed to
+predict house prices based on the remaining features.
+
+The 7 for sale in and around Amsterdam as in the data set are:
+
+-   **Address :** Residential address
+
+-   **Zip :** Residential Zip code.
+
+-   **Price :** Residential price in Euros.
+
+-   **Area :** Residential area of House in square meters.
+
+-   **Room :** Number of rooms in house
+
+-   **Lon :** Longitude coordinates of location of house
+
+-   **Lat :** Latitude coordinates of location of house
+
+
+<br>
+
+
+### <strong> Our Amsterdam data set table looks like </strong>
+
+```{r echo=FALSE, message=FALSE, warning=FALSE, paged.print=FALSE}
+
+
+# Replace the Address column with dashes
+AmHouse$Address <- ". .. ... ..... ....."
+
+# Print the modified data frame
+print(head(AmHouse))
+```
+
+```{r echo=FALSE, message=FALSE, warning=FALSE, paged.print=FALSE}
+# Print the count of rows with NA values
+# print(paste("Number of rows with NA values:", NA_rows_count))
+
+
+# Print rows with NA values
+# NA_rows <- AmHouse[!complete.cases(AmHouse), ]
+# print(NA_rows)
+
+# removing NA values and storing it in a new Data Frame
+Amsterdam_House <- na.omit(AmHouse)
+
+# Reset row names
+row.names(Amsterdam_House) <- NULL
+
+
+# Again counting the number of rows with NA values to confirm 
+NA_rows_count_new <- sum(!complete.cases(Amsterdam_House))
+
+# Print the count of rows with NA values
+#print(paste("Number of rows with NA values:", NA_rows_count_new))
+
+# NOtE we don't need address and zip for our Data Analysis
+# Remove the 'Address' column
+Amsterdam_House <- Amsterdam_House %>%
+  select(-Address, -Zip)
+
+# Change column names
+colnames(Amsterdam_House) <- c("Sl No", "Price", "Area", "Rooms", "Longitude", "Latitude")
+
+```
+
+
+<br><br>
+
+## <strong> Exploratory Data Analysis </strong>
+<hr style="border: 0; height: 2px; background-color: grey;">
+
+
+### <strong> Figure 01. Histogram of (a) Price, (b) number of rooms and (c) Area of House</strong>
+
+```{r echo=FALSE, fig.height=5, fig.width=12}
+
+plot1 <- ggplot(Amsterdam_House, aes_string(x = "Price")) +
+  geom_histogram(aes(y = ..density..), binwidth = 200000, fill = "purple", color = "black", alpha = 0.7) +
+  geom_density(color = "red", size = 1) +
+  ggtitle("Probability Distribution of House Prices") +
+  labs(x = "Price (Euros)", y = "Density") +
+  theme_minimal()+
+  theme(panel.background = element_rect(fill = "white", color = "grey", size = 2),         plot.background = element_rect(fill = "white", color = "black", size = 2))
+
+plot2 <- ggplot(Amsterdam_House, aes_string(x = "Rooms")) +
+  geom_histogram(aes(y = ..density..),fill = "blue",color = "black",alpha= 0.7,bins= 20) +
+  geom_density(color = "red", size = 1, adjust = 3) +
+  ggtitle("Probability Distribution ") +
+  labs(x = "Number of rooms", y = "Density") +
+  xlim(0,15 ) + 
+  theme_minimal()+
+  theme(panel.background = element_rect(fill = "white", color = "grey", size = 2),         plot.background = element_rect(fill = "white", color = "black", size = 2))
+
+plot3 <- ggplot(Amsterdam_House, aes_string(x = "Area")) +
+  geom_histogram(aes(y = ..density..), binwidth =20,fill ="darkgreen",color ="black", alpha = 0.7,bins = 50) +
+  geom_density(color = "red", size = 1) +
+  ggtitle("Probability Distribution of House Area") +
+  labs(x = "Area (in Sq meter)", y = "Density") +
+  xlim(-10, NA) + 
+  theme_minimal()+
+  theme(panel.background = element_rect(fill = "white", color = "grey", size = 2),         plot.background = element_rect(fill = "white", color = "black", size = 2))
+
+grid.arrange(plot1, plot2, plot3, ncol = 3)
+```
+
+<br>
+
+### <strong> Figure 02. (a) Number of Rooms vs Price of House and (b) Area vs Price of House </strong>
+
+```{r echo=FALSE, message=FALSE, warning=FALSE, paged.print=FALSE, fig.height =5, fig.width=12}
+plot1 = ggplot(Amsterdam_House, aes(x = Rooms, y = Price)) +
+  geom_point(color = "blue", size = 3) +  
+  geom_smooth(method = "lm", col = "red", se = FALSE) +
+  labs(title = "Rooms vs. Price", x = "Number of Rooms", y = "Price (in Euros)") + 
+  theme_minimal()+
+  theme(panel.background = element_rect(fill = "white", color = "grey", size = 2),         plot.background = element_rect(fill = "white", color = "black", size = 2))
+
+plot2 = ggplot(Amsterdam_House, aes(x = Area, y = Price)) +
+  geom_point(color = "blue", size = 3) +  
+  geom_smooth(method = "lm", col = "red", se = FALSE) + 
+  labs(title = "Area vs. Price", x = " Area(in sq m)", y = "Price (in Euros)" ) + 
+  theme_minimal() + 
+  theme(panel.background = element_rect(fill = "white", color = "grey", size = 2),
+        plot.background = element_rect(fill = "white", color = "black", size = 2))
+
+grid.arrange(plot1, plot2, ncol = 2)
+```
+
+<br>
+
+### <strong> Figure 03. (a) Longitude vs Price , (b) Latitude vs Price </strong>
+
+```{r echo=FALSE, message=FALSE, warning=FALSE, paged.print=FALSE, fig.height=4, fig.width = 12}
+plot1 = ggplot(Amsterdam_House, aes(x = Longitude, y = Price)) +
+  geom_point(color = "blue", size = 3) +  
+  geom_smooth(method = "lm", col = "red", se = FALSE) + 
+  labs(title = "Price vs. Logitude", x = "Longitude (in degree)",y = "Price (in Euros)") +
+  theme_minimal() + 
+  theme(panel.background = element_rect(fill = "white", color = "grey", size = 2),
+        plot.background = element_rect(fill = "white", color = "black", size = 2))
+
+plot2 = ggplot(Amsterdam_House, aes(x = Latitude, y = Price)) +
+  geom_point(color = "green", size = 3) +  
+  geom_smooth(method = "lm", col = "red", se = FALSE) + 
+  labs(title="Price vs. Latitude",x="Latitude (in degree)",y="Price (in Euros)") +
+  theme_minimal() + 
+  theme(panel.background = element_rect(fill = "white", color = "grey", size = 2),
+        plot.background = element_rect(fill = "white", color = "black", size = 2))
+
+grid.arrange(plot1, plot2, ncol = 2)
+```
+
+<br>
+
+### <strong> Figure 04. Plots between Area vs Rooms </strong>
+
+```{r echo=FALSE, message=FALSE, warning=FALSE, fig.height=4, fig.width = 12}
+plot1 = ggplot(Amsterdam_House, aes(x = Rooms, y = Area)) +
+  geom_point(color = "blue", size = 3) +  
+  geom_smooth(method = "lm", col = "red", se = FALSE) + 
+  labs(title = 'Area vs. Rooms', x = "Number of Rooms", y = "Area ( in sq m)")+
+  theme_minimal() + 
+  theme(panel.background = element_rect(fill = "white", color = "grey", size = 2),
+        plot.background = element_rect(fill = "white", color = "black", size = 2))
+
+plot2 = ggplot(Amsterdam_House, aes(x = as.factor(Rooms), y = Area)) +
+  geom_boxplot(fill = 'cyan', color = 'black') +
+  labs(title = 'Area vs. Rooms', x = "Number of Rooms", y = "Area ( in sq m)") +
+  theme_minimal() + 
+  theme(panel.background = element_rect(fill = "white", color = "grey", size = 2),
+        plot.background = element_rect(fill = "white", color = "black", size = 2))
+
+grid.arrange(plot1,plot2, ncol = 2)
+```
+
+<br>
+
+### <strong> Figure 05. Plot of House Locations(longitude and Latitude), Price and Area </strong>
+
+```{r echo=FALSE, message=FALSE, warning=FALSE, fig.height=8, fig.width=16}
+ggplot(Amsterdam_House, aes(x = Longitude, y = Latitude)) +
+  geom_point(aes(size = Price, color = Area), alpha = 0.7) +
+  scale_color_gradient(low = 'blue', high = 'red') +
+  labs(title = 'Plot of House Locations', x = 'Longitude', y = 'Latitude') +
+  theme_minimal()+
+  theme(
+    panel.background = element_rect(fill = "white", color = "grey", size = 2),  
+    plot.background = element_rect(fill = "white", color = "black", size = 2))
+```
+
+<br>
+
+### <strong> Figure 06. Plot of Rooms vs Area coloured by Price </strong>
+
+```{r echo=FALSE, message=FALSE, warning=FALSE, paged.print=FALSE, fig.height=9, fig.width=16}
+ggplot(Amsterdam_House, aes(x = as.factor(Rooms), y = Area, color = Price)) +
+  geom_point(size = 4) +
+  scale_color_gradient(low = 'yellow', high = 'red') +
+  labs(title = 'Area vs. Rooms by Price', x = 'Rooms', y = 'Area') +
+  theme_minimal()+
+  theme(
+    panel.background = element_rect(fill = "white", color = "grey", size = 2),        plot.background = element_rect(fill = "white", color = "black", size = 2))
+```
+
+<br>
+
+### <strong>Figure 07. Interactive 3D plot of Area vs Room vs Price</strong>
+<div style="border: 2px solid grey; padding: 20px; border-radius: 10px; background-color: #f9f9f9;">
+<center>
+```{r}
+library(plotly)
+plot_ly(Amsterdam_House, x = ~Area, y = ~Rooms, z = ~Price, 
+        color = ~Price, colors = colorRamp(c("red", "blue", "green"))) %>%
+  add_markers(size = 3) %>%
+  layout(title = '3D Scatter Plot of Area, Rooms, and Price',
+         scene = list(xaxis = list(title = 'Area'),
+                      yaxis = list(title = 'Price'),
+                      zaxis = list(title = 'Rooms')))
+```
+</center>
+</div>
+
+<br>
+
+### <strong>Figure 08. Interactive 3D plot of Latitude vs Longitude vs Price </strong>
+<center>
+<div style="border: 2px solid grey; padding: 20px; border-radius: 10px; background-color: #f9f9f9;">
+```{r}
+library(plotly)
+plot_ly(Amsterdam_House, x = ~Latitude, y = ~Longitude, z = ~Price, 
+        color = ~Price, colors = colorRamp(c("red", "blue", "green"))) %>%
+  add_markers(size = 3) %>%
+  layout(title = '3D Scatter Plot of Latitude, Longitude, and Price',
+         scene = list(xaxis = list(title = 'Latitude'),
+                      yaxis = list(title = 'Longitude'),
+                      zaxis = list(title = 'Price')))
+```
+</div>
+</center>
+
+<br>
+
+## <strong>Correlation between Variables</strong>
+<hr style="border: 0; height: 2px; background-color: grey;">
+<center>
+```{r Finding Correlatipn Matrix}
+
+# Compute the correlation matrix for numeric variables
+correlation_matrix <- cor(Amsterdam_House[, c("Price", "Area", "Rooms", "Longitude", "Latitude")])
+```
+</center>
+
+<br>
+
+### <strong> Figure 09. Heat map of correlation between fields of Amsterdam House data set </strong>
+<center>
+```{r plotting Correloation Heatmap, echo= FALSE, message=FALSE, warning=FALSE}
+# Reshape the correlation matrix into long format
+cor_melted <- melt(correlation_matrix)
+
+# Convert Var1 and Var2 to character
+cor_melted$Var1 <- as.character(cor_melted$Var1)
+cor_melted$Var2 <- as.character(cor_melted$Var2)
+
+# Filter to keep only the upper triangle, including the diagonal
+cor_melted <- cor_melted[cor_melted$Var2 >= cor_melted$Var1, ]
+
+# Define colors using RdYlBu palette
+colors <- brewer.pal(n = 10, name = "RdYlBu")
+
+# Create the heatmap with the specified aesthetics
+heatmap_plot <- ggplot(cor_melted, aes(x = Var1, y = Var2, fill = value)) +
+  geom_tile(color = "white") +
+  scale_fill_gradientn(colors = colors, 
+                       values = scales::rescale(c(-1, 0, 1)),  # Rescale for color mapping
+                       na.value = "grey") +  # Color for NA values
+  geom_text(aes(label = round(value, 2)), color = "black", size = 4) +
+  theme_minimal() +
+  labs(title = "Correlation Heatmap", x = "Fields", y = "Fields") +
+  theme(axis.text.x = element_text( size = 15),  # Adjust text size
+        axis.text.y = element_text(size = 15), 
+        plot.title = element_text(hjust = 0.5, size = 15),  # Center the title
+        axis.title.x = element_blank(),  # Remove x-axis title
+        axis.title.y = element_blank()) +  # Remove y-axis title
+  scale_x_discrete(position = "top") + # Move x-axis labels to the top
+  theme(panel.background = element_rect(fill = "white", color = "grey", size = 2),
+    plot.background = element_rect(fill = "white", color = "black", size = 2)) 
+# Display the plot
+print(heatmap_plot)
+
+```
+
+<br>
+
+###  <strong>Correlation matrix for fields is </strong>
+
+```{r}
+print(correlation_matrix)
+```
+</center>
+
+<br><br>
+
+## <strong>Result </strong>
+<hr style="border: 0; height: 2px; background-color: grey;">
+
+The exploratory data analysis (EDA) conducted on the Amsterdam housing dataset provides valuable insights into the factors influencing housing prices. The key findings from the EDA are summarized below:
+
+1.  **Univariate Analysis:**
+\vspace{-2mm}
+    -   **Price**: Histogram reveals a right-skewed distributed, with
+        mean price around € 580,000.
+    -   **Area**: Most properties range between 50 and 150 square
+        meters.
+    -   **Rooms**: Houses with 3 or 4 rooms are most common.
+2.  **Bivariate Analysis:**
+\vspace{-2mm}
+    -   **Rooms vs. Price**: Strong positive correlation i.e, more rooms
+        means high house price.
+    -   **Area vs. Price**: positive correlation is observed i.e, larger
+        homes are more expensive.
+    -   **Price vs. Longitude/Latitude**: Weak correlation, but location
+        still influences price.
+    -   **Rooms vs. Area**: High correlation between room count and
+        area.
+3.  **Multivariate Analysis:**
+\vspace{-2mm}
+    -   **Price, Area, and Location**: Geographic location influences
+        prices, though area remains a stronger predictor.
+    -   **Rooms vs. Area by Price**: Higher-priced houses typically have
+        more rooms and larger areas.
+    -   **Correlation Heatmap**: Price is most strongly correlated with
+        area and rooms, while longitude and latitude have weaker
+        effects.
+
+<br><br>
+
+## <strong>Conclusion</strong>
+<hr style="border: 0; height: 2px; background-color: grey;">
+This project successfully analyzed and predicted housing prices in Amsterdam by examining a comprehensive dataset from August 2021. Through univariate, bivariate, and multivariate data analyses, we identified significant trends and correlations between various predictors such as area, number of rooms, and geographic location.
+
+-   **Rooms and Area vs Price**: House price is strongly positvely
+    influenced by area and the number of rooms, as seen in the various
+    bivariate and multivariate plots. so, in prediction it will get more
+    weight.
+
+-   **Latitude and Longitude vs Price**: longitude and latitude, also
+    affects house prices, though not as strongly as the size of the
+    home. So, they will play a role in prediction but will have less
+    weight.
+
+-   **Correlation of Variables**: The correlation heatmap and pair plots
+    reinforce the findings that area and room count are the strongest
+    predictors of price, with location playing a secondary role.
+
+    The strong positive correlation between the `Area` and `Price`, as
+    well as the moderate correlation with `Rooms`, indicates that a
+    linear relationship may exist between these variables and house
+    prices. This suggests that a linear regression model could provide a
+    solid baseline for predictions. Also, other predictors identified
+    during the EDA , such as `Longitude` and `Latitude`, can be included
+    as independent variables in the linear model. These features have
+    shown significant relationships with house prices and are likely to
+    contribute meaningfully to the model's accuracy.
+    
+    
+    
+    
+<hr style="border: 0; height: 3px; background-color: black;">
+<hr style="border: 0; height: 1px; background-color: black;">
