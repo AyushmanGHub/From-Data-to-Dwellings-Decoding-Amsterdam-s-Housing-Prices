@@ -3,7 +3,7 @@
 ## 🌐 **Try it Live!**  
 
 🚀 Experience the **Decode Amsterdam Houses Prices** in action yourself:  
-👉 [**Check it out here!**][https://heartbeatsentineldecodingandpredictingheartfailure.streamlit.app/](https://gkrujk-ayur-ayushman.shinyapps.io/Decoding-Amsterdam-House-Prices-App/)
+👉 [**Check it out here!**]([https://heartbeatsentineldecodingandpredictingheartfailure.streamlit.app/](https://gkrujk-ayur-ayushman.shinyapps.io/Decoding-Amsterdam-House-Prices-App/))
  
 💻 Explore the power of data-driven insights in Housing Prices.  
 
