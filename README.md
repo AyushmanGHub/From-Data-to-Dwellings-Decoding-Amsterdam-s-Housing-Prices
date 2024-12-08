@@ -1,11 +1,12 @@
 ---
 
-## 🌐 **Try it Live!**  
+## 🌐 **Try it Live!**
 
 🚀 Experience the **Decode Amsterdam Houses Prices** in action yourself:  
 👉 [https://gkrujk-ayur-ayushman.shinyapps.io/Decoding-Amsterdam-House-Prices-App/](https://gkrujk-ayur-ayushman.shinyapps.io/Decoding-Amsterdam-House-Prices-App/)
+
+💻 Explore the power of data-driven insights in Housing Prices.
  
-💻 Explore the power of data-driven insights in Housing Prices.  
 
 ---
 <hr style="border: 1px dashed grey; width: 80%;"/>
