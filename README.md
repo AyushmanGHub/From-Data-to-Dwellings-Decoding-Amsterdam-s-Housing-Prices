@@ -11,9 +11,6 @@
 ---
 <hr style="border: 1px dashed grey; width: 80%;"/>
 
-
-#### Amsterdam-House-Price-Analysis-and-Prediction
-
 # From Data to Dwellings: Decoding Amsterdam's Housing Prices 
 <hr style="border: 0; height: 3px; background-color: black;">
 
